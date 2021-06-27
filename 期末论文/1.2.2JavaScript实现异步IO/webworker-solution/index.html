@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" name="file" id="file"/>
+    <script type="text/javascript">
+    let fileInput = document.getElementById('file');
+    fileInput.onchange = function(){
+        let worker = new Worker('worker.js');
+        console.log('Start reading');
+        worker.postMessage(fileInput.files);
+        worker.onmessage = function(event){
+            console.log(event.data);
+        }
+
+        console.log('Start computing');
+        console.time('Time for computing');
+        let result = fn(44);
+        console.timeEnd('Time for computing');
+        console.log(`End computing, the result is ${result}`);
+        function fn(n){
+            if(n===0) return 0;
+            if(n===1) return 1;
+
+            return fn(n-1)+fn(n-2);
+        }
+    }
+        
+    </script>
+</body>
+</html>
